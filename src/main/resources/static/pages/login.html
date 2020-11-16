@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+<!--背景-->
+<div class="wel" id="background-3"></div>
+<!--左右两边云-->
+<div class="wel" id="box">
+    <div class="box-1 lefp"></div>
+    <div class="box-1">
+        <div class="righp"></div>
+    </div>
+</div>
+<!--荧光点点-->
+<div class="wel" id="git"></div>
+<!--登录注册表-->
+<div class="wel" id="from">
+    <div class="box-2 le-1">
+        <form action="/user/login" method="post">
+            <div class="flrg">
+                    <h3>登录</h3>
+                <div class="a">
+                    <!--<label>账号：</label>-->
+                    <input type="text" class="in-1" name="username" placeholder="请输入账号">
+                </div>
+                <div class="a">
+                    <!--<label>密码：</label>-->
+                    <input type="password" class="in-1" name="password" placeholder="请输入密码">
+                </div>
+                <div class="a">
+                    <input class="in-1" type="submit"value="登录"/>
+                </div>
+                <div class="a">
+                    <div class="hr"></div>
+                </div>
+                <div class="a">
+                    <a href="#">忘记密码？</a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="box-2 le-2">
+        <form action="/user/register" method="post">
+            <div class="flrg-1">
+                <h3>注册</h3>
+                <div class="a">
+                    <input type="text" class="in-1" name="username" placeholder="您的用户名">
+                </div>
+                <div class="a">
+                    <input type="password" class="in-1" name="password" placeholder="输入密码">
+                </div>
+                <div class="a">
+                    <input type="text" class="in-1" name="realname" placeholder="输入真实姓名">
+                </div>
+                <div class="a">
+                    <input class="in-1" type="submit" value="注册"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

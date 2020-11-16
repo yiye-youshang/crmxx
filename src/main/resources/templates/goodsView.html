@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>商品详情页</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <base th:href="${#request.getContextPath()}+'/'">
+    <script type="text/javascript" th:src="'/plugins/jQuery/jquery-3.5.1.js'"></script>
+    <script type="text/javascript" th:inline="javascript">
+        $(function () {
+            $.get("/seckill/getKillid",{killid:[[${goods.killid}]]},function (data) {
+                //更新库存值
+                $("#stock").html(data);
+            },"json");
+        });
+        function countDown() {
+            //获取秒杀倒计时进行判断，0-->正在进行秒杀,-1-->秒杀结束,remailSeconds>0-->代表倒计时
+            var remainSeconds = [[${remainSeconds}]];
+
+            if (remainSeconds > 0) {//秒杀还没有开始，进行倒计时功能
+                //倒计时
+                var now = new Date();
+                var startTime = new Date([[${goods.startdate}]]);
+                var diffTime = parseInt((startTime.getTime() - now.getTime()) / 1000);
+                var day, hour, min, second;
+
+                second = diffTime % 60;
+                min = parseInt(diffTime / 60) % 60;
+                hour = parseInt(diffTime / 60 / 60) % 24;
+                day = parseInt(diffTime / 60 / 60 / 24);
+
+                var time = '还剩' + day + '天' + hour + '小时' + min + '分钟' + second + '秒';
+                $("#remainSeconds").html(time);
+            } else if (remainSeconds < 0) {
+                var time = '还剩' + 0 + '天' + 0 + '小时' + 0 + '分钟' + 0 + '秒';
+                $("#remainSeconds").html(time);
+            } else {
+                var nowdate = new Date();
+                var startdate = new Date([[${goods.enddate}]])
+                var diffTime = parseInt((startdate.getTime() - now.getTime()) / 1000);
+                var day, hour, min, second;
+                second = diffTime % 60;
+                min = parseInt(diffTime / 60) % 60;
+                hour = parseInt(diffTime / 60 / 60) % 24;
+                day = parseInt(diffTime / 60 / 60 / 24);
+                var time = '还剩' + day + '天' + hour + '小时' + min + '分钟' + second + '秒';
+                $("#remainSeconds").html(time);
+            }
+        }
+        var t = window.setInterval(countDown, 1000);
+    </script>
+</head>
+<body>
+<h1 style="text-align: center" th:text="秒杀商品详情"></h1>
+<a href="/user/loginout" style="position:absolute;right:1px;top:1px;z-index:999;">
+    <button class="btn-lg btn-warning">注销</button>
+</a>
+<table id="goodslist" class="table table-bordered table-striped table-hover dataTable">
+    <tr>
+        <td>商品名称</td>
+        <td colspan="3" th:text="${goods.goodsname}"></td>
+    </tr>
+    <tr>
+        <td>商品图片</td>
+        <td colspan="3"><img th:src="${goods.goodsimg}"/></td>
+    </tr>
+    <tr>
+        <td>秒杀开始时间</td>
+        <td th:text="${#dates.format(goods.startdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        <td id="killStatus">
+            <!-- 先取得这个时间 -->
+            <input type="hidden"  th:value="${remainSeconds}"/>
+            <span th:if="${killStatus eq 0}">秒杀还未开始，倒计时:<span id="remainSeconds"></span></span>
+            <span th:if="${killStatus eq 1}">秒杀正在进行</span>
+            <span th:if="${killStatus eq 2}">秒杀已经结束</span>
+        </td>
+        <td>
+            <form id="miaoshaForm" method="post" th:action="'/seckill/kill/'+${goods.killid}">
+                <button class="btn btn-primary btn-block" type="submit" id="buyButton">立即秒杀</button>
+                <input type="hidden" name="goodsId" th:value="${goods.killid}"></input>
+            </form>
+        </td>
+
+
+    </tr>
+    <tr>
+        <td>商品原价</td>
+        <td colspan="3" th:text="${goods.goodsprice}"></td>
+    </tr>
+    <tr>
+        <td>秒杀价</td>
+        <td colspan="3" th:text="${goods.killprice}"></td>
+    </tr>
+    <tr>
+        <td>库存数量</td>
+        <td id="stock" colspan="3" th:text="${goods.stockcount}"></td>
+    </tr>
+</table>
+</body>
+
+
+</html>
